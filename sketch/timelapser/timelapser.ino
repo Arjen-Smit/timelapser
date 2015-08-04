@@ -1,3 +1,5 @@
+#include <TM1637.h>
+
 #define SLOW_INTERVAL 10 // Time between photos in seconds
 #define FAST_INTERVAL 3 // Time between photos at start and end in seconds
 
@@ -6,17 +8,24 @@
 
 #define FPS 24 // Frames per Second;
 
+#define CLK 12
+#define DIO 13
+
+TM1637 disp(CLK,DIO);
 int next_delay;
 
 void setup() {
-   Serial.begin(115200);
-   next_delay = FAST_INTERVAL * 1000;
    pinMode(7,OUTPUT);
+   digitalWrite(7,HIGH);
+   disp.set(5);
+   disp.init(D4056A);
+   disp.display(DURATION * FPS);
 }
 
-
 void loop() {
-  delay(5000);
+  delay(2000);
+  
+ 
   next_delay = FAST_INTERVAL * 1000;
   for (int i=1;i<=DURATION*FPS;i++) {
     if (i <= FPS*EASING) {
@@ -26,11 +35,11 @@ void loop() {
     } else {
       next_delay = SLOW_INTERVAL * 1000;
     }
-    Serial.println(next_delay);
     digitalWrite(7,LOW);
     delay(100);
     digitalWrite(7,HIGH);
-//    delay(next_delay - 100);
+    disp.display(DURATION * FPS - i);
+    delay(next_delay - 100);
   }
   exit(0);
 }
