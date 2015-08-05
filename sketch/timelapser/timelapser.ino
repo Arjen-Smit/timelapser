@@ -36,10 +36,10 @@ void loop() {
       next_delay = SLOW_INTERVAL * 1000;
     }
     digitalWrite(7,LOW);
-    delay(100);
+    delay(500);
     digitalWrite(7,HIGH);
     disp.display(DURATION * FPS - i);
-    delay(next_delay - 100);
+    delay(next_delay - 500);
   }
   exit(0);
 }
